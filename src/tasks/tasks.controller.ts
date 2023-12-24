@@ -11,7 +11,7 @@ export class TasksController {
     }
 
     @Get('status/:id')
-    getTaskStatusById(@Param('id') id: string) {
+    getTaskStatusById(@Param('id') id: number) {
         return this.tasksService.getTaskStatusById(id);
     }
 
