@@ -14,11 +14,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  // Create init data in db onload
-  const tasksService = app.get(TasksService);
-  await tasksService.createTask('Multiply Array', '')
-  await tasksService.createTask('Sum Array', '')
-
   await app.listen(3000);
 }
 bootstrap();
