@@ -7,11 +7,6 @@ import { Response } from "express";
 export class ExecController {
     constructor(private execService: ExecService) {}
 
-    // @Get('list')
-    // getAvailableTasks() {
-    //     return this.execService.getAvaiableTasks()
-    // }
-
     @Get('status/:id')
     getTaskStatusById(@Param('id') id: number) {
         return this.execService.getTaskStatusById(id);

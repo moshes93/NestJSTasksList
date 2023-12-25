@@ -7,9 +7,6 @@ import { Task } from "src/task/task.entity";
 @Injectable({})
 export class ExecService {
     constructor(@InjectRepository(Exec) private execRepository: Repository<Exec>) {}
-    // getAvaiableTasks() {
-    //     return this.execRepository.find();
-    // }
 
     executeTask(name: string, parameters: object) {
         const exec = new Exec();
