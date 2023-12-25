@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Exec } from "./exce.entity";
+import { Task } from "src/task/task.entity";
 
 @Injectable({})
 export class ExecService {
@@ -26,6 +27,11 @@ export class ExecService {
             exec.status = "completed";
             return this.execRepository.save(exec);
         }
+    }
+
+    async getTask(taskId: number) {
+        const exec = await this.execRepository.findOne({where: {id: taskId}})
+        return exec;
     }
 
     async getTaskStatusById(taskId: number) {
