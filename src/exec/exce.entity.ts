@@ -9,8 +9,8 @@ export class Exec {
     @Column({default: 'pending'})
     status: string;
 
-    @Column()
-    parameters: string;
+    @Column({ type: 'json' })
+    parameters: object;
 
     @Column({nullable: true})
     result: string;
