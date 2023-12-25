@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Logger, Param, Post, Req, Res } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Logger, Param, Post, Res } from "@nestjs/common";
 import { ExecService } from "./exec.service";
 import { TaskRequest, delay, handleExecution } from "./utils";
 import { Response } from "express";
