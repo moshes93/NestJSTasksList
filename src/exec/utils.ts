@@ -23,3 +23,7 @@ export function handleExecution(taskName: string, parameters: any) {
     }
     return result;
 }
+
+export function delay (delayInms) {
+    return new Promise(resolve => setTimeout(resolve, delayInms));
+};
