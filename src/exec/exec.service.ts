@@ -18,7 +18,7 @@ export class ExecService {
     }
 
     async updateCompletedTask(taskId: number, result: string) {
-        const exec = await this.getTask(taskId);
+        const exec = await this.getExec(taskId);
         if (exec) {
             exec.result = result;
             exec.status = "completed";
@@ -26,17 +26,17 @@ export class ExecService {
         }
     }
 
-    async getTask(taskId: number) {
+    async getExec(taskId: number) {
         const exec = await this.execRepository.findOne({where: {id: taskId}})
         return exec;
     }
 
-    async getTaskStatusById(taskId: number) {
-        const task = await this.execRepository.findOne({where: {id: taskId}})
-        return task;
+    async getExecStatusById(taskId: number) {
+        const exec = await this.execRepository.findOne({where: {id: taskId}})
+        return exec;
     }
 
-    getTaskResultById(taskId: string) {
+    getExecResultById(taskId: string) {
         return `Getting result for task ${taskId}`;
     }
 }

@@ -8,13 +8,13 @@ export class ExecController {
     constructor(private execService: ExecService) {}
 
     @Get('status/:id')
-    getTaskStatusById(@Param('id') id: number) {
-        return this.execService.getTaskStatusById(id);
+    getExecStatusById(@Param('id') id: number) {
+        return this.execService.getExecStatusById(id);
     }
 
     @Get('result/:id')
-    getTaskResultById(@Param('id') id: string) {
-        return this.execService.getTaskResultById(id);
+    getExecResultById(@Param('id') id: string) {
+        return this.execService.getExecResultById(id);
     }
 
     @Post('run')
@@ -34,16 +34,4 @@ export class ExecController {
         }
         
     }
-
-    /* @Post('run')
-    @HttpCode(200)
-    async executeTask(@Body() req: TaskRequest) {
-        const { name, parameters } = req;
-        try {
-            return await this.execService.executeTask(name, parameters);
-        } catch (e) {
-            throw new HttpException({ error: 'Task execution failed' }, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        
-    } */
 }
