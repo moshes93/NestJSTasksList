@@ -10,9 +10,12 @@ export class ExecService {
     //     return this.execRepository.find();
     // }
 
-    executeTask(name: string, parameters: string) {
+    executeTask(name: string, parameters: object) {
         const exec = new Exec();
+        const task = new Task();
+        task.name = name;
         exec.parameters = parameters;
+        exec.task = task;
         return this.execRepository.save(exec);
     }
 
