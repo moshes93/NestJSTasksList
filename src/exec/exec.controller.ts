@@ -1,6 +1,7 @@
-import { Body, Controller, Get, HttpCode, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Param, Post, Req, Res } from "@nestjs/common";
 import { ExecService } from "./exec.service";
-import { TaskRequest } from "./utils";
+import { TaskRequest, delay, handleExecution } from "./utils";
+import { Response } from "express";
 
 @Controller('exec')
 export class ExecController {
@@ -23,7 +24,31 @@ export class ExecController {
 
     @Post('run')
     @HttpCode(200)
-    executeTask(@Body() req: TaskRequest) {
-        console.log(req);
+    async executeTask(@Body() body: TaskRequest, @Res() res: Response) {
+        const { name, parameters } = body;
+        try {
+            const exec = await this.execService.executeTask(name, parameters);
+            res.status(200).json({
+                taskId: exec.id
+            });
+            await delay(3000)
+            const result = handleExecution(name, parameters);
+            this.execService.updateCompletedTask(exec.id, result);
+        } catch (e) {
+            throw new HttpException({ error: 'Task execution failed' }, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
     }
+
+    /* @Post('run')
+    @HttpCode(200)
+    async executeTask(@Body() req: TaskRequest) {
+        const { name, parameters } = req;
+        try {
+            return await this.execService.executeTask(name, parameters);
+        } catch (e) {
+            throw new HttpException({ error: 'Task execution failed' }, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
+    } */
 }
