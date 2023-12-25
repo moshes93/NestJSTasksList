@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Param, Post, Req, Res } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Logger, Param, Post, Res } from "@nestjs/common";
 import { ExecService } from "./exec.service";
 import { TaskRequest, delay, handleExecution } from "./utils";
 import { Response } from "express";
@@ -6,7 +6,7 @@ import { DatabaseActionError } from "src/exceptions/CreateExecException";
 
 @Controller('exec')
 export class ExecController {
-    constructor(private execService: ExecService) {}
+    constructor(private execService: ExecService, private logger: Logger) {}
 
     @Get('status/:id')
     async getExecStatusById(@Param('id') id: number) {
@@ -30,16 +30,19 @@ export class ExecController {
         const { name, parameters } = body;
         try {
             const exec = await this.execService.executeTask(name, parameters);
+            this.logger.log('Execution task created successfully')
             res.status(200).json({
                 taskId: exec.id
             });
             await delay(3000)
             const result = handleExecution(name, parameters);
             this.execService.updateCompletedTask(exec.id, result);
+            this.logger.log('Execution task finished and updated database successfully')
         } catch (e) {
-            // To handle logger
             if (e instanceof DatabaseActionError) {
-                console.log(e);
+                this.logger.error(e.message, `Unable to run proccess with task '${name}' and parameters ${parameters}`, 'DatabaseActions');
+            } else {
+                this.logger.error(e);
             }
             throw new HttpException({ error: 'Task execution failed' }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
