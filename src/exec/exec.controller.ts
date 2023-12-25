@@ -13,7 +13,7 @@ export class ExecController {
     }
 
     @Get('result/:id')
-    getExecResultById(@Param('id') id: string) {
+    getExecResultById(@Param('id') id: number) {
         return this.execService.getExecResultById(id);
     }
 
