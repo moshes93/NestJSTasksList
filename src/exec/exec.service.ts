@@ -31,9 +31,9 @@ export class ExecService {
         return exec;
     }
 
-    async getExecStatusById(taskId: number) {
-        const exec = await this.execRepository.findOne({where: {id: taskId}})
-        return exec;
+    async getExecStatusById(execId: number) {
+        const exec = await this.getExec(execId);
+        return exec.status;
     }
 
     getExecResultById(taskId: string) {
