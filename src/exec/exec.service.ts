@@ -19,6 +19,15 @@ export class ExecService {
         return this.execRepository.save(exec);
     }
 
+    async updateCompletedTask(taskId: number, result: string) {
+        const exec = await this.getTask(taskId);
+        if (exec) {
+            exec.result = result;
+            exec.status = "completed";
+            return this.execRepository.save(exec);
+        }
+    }
+
     async getTaskStatusById(taskId: number) {
         const task = await this.execRepository.findOne({where: {id: taskId}})
         return task;
