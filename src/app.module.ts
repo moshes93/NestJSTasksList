@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { TasksModule } from './tasks/tasks.module';
+import { ExecModule } from './exec/exec.module';
 import { APP_FILTER } from '@nestjs/core';
 import { NotFoundFilter } from './filters/NotFoundFilter';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { TaskModule } from './task/task.module';
 
 @Module({
   imports: [
@@ -12,7 +13,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-    TasksModule
+    ExecModule,
+    TaskModule
   ],
   providers: [
     {
