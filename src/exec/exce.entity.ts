@@ -15,6 +15,6 @@ export class Exec {
     @Column({nullable: true})
     result: string;
 
-    @ManyToOne(() => Task, (task) => task.name)
+    @ManyToOne(() => Task, (task) => task.exec)
     task: Task
 }
