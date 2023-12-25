@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, Param, Post } from "@nestjs/common";
 import { ExecService } from "./exec.service";
 import { TaskRequest } from "./utils";
 
@@ -22,6 +22,7 @@ export class ExecController {
     }
 
     @Post('run')
+    @HttpCode(200)
     executeTask(@Body() req: TaskRequest) {
         console.log(req);
     }
