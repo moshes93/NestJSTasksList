@@ -36,7 +36,8 @@ export class ExecService {
         return exec.status;
     }
 
-    getExecResultById(taskId: string) {
-        return `Getting result for task ${taskId}`;
+    async getExecResultById(execId: number) {
+        const exec = await this.getExec(execId);
+        return exec.result;
     }
 }
