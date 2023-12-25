@@ -1,12 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Task } from "src/task/task.entity";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Exec {
     @PrimaryGeneratedColumn()
     id: number;
-
-    @Column()
-    name: string;
 
     @Column({default: 'pending'})
     status: string;
@@ -16,4 +14,7 @@ export class Exec {
 
     @Column({nullable: true})
     result: string;
+
+    @ManyToOne(() => Task, (task) => task.name)
+    task: Task
 }
