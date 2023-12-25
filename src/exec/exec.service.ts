@@ -26,8 +26,8 @@ export class ExecService {
         }
     }
 
-    async getExec(taskId: number) {
-        const exec = await this.execRepository.findOne({where: {id: taskId}})
+    async getExec(execId: number) {
+        const exec = await this.execRepository.findOne({where: {id: execId}})
         return exec;
     }
 
