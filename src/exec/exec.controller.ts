@@ -2,6 +2,7 @@ import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Param, Post
 import { ExecService } from "./exec.service";
 import { TaskRequest, delay, handleExecution } from "./utils";
 import { Response } from "express";
+import { DatabaseActionError } from "src/exceptions/CreateExecException";
 
 @Controller('exec')
 export class ExecController {
@@ -36,6 +37,10 @@ export class ExecController {
             const result = handleExecution(name, parameters);
             this.execService.updateCompletedTask(exec.id, result);
         } catch (e) {
+            // To handle logger
+            if (e instanceof DatabaseActionError) {
+                console.log(e);
+            }
             throw new HttpException({ error: 'Task execution failed' }, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         
