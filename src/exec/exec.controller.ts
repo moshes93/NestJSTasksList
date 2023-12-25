@@ -8,13 +8,19 @@ export class ExecController {
     constructor(private execService: ExecService) {}
 
     @Get('status/:id')
-    getExecStatusById(@Param('id') id: number) {
-        return this.execService.getExecStatusById(id);
+    async getExecStatusById(@Param('id') id: number) {
+        const status = await this.execService.getExecStatusById(id);
+        return {
+            status
+        };
     }
 
     @Get('result/:id')
-    getExecResultById(@Param('id') id: string) {
-        return this.execService.getExecResultById(id);
+    async getExecResultById(@Param('id') id: number) {
+        const result = await this.execService.getExecResultById(id);
+        return {
+            result
+        }
     }
 
     @Post('run')

@@ -26,17 +26,18 @@ export class ExecService {
         }
     }
 
-    async getExec(taskId: number) {
-        const exec = await this.execRepository.findOne({where: {id: taskId}})
+    async getExec(execId: number) {
+        const exec = await this.execRepository.findOne({where: {id: execId}})
         return exec;
     }
 
-    async getExecStatusById(taskId: number) {
-        const exec = await this.execRepository.findOne({where: {id: taskId}})
-        return exec;
+    async getExecStatusById(execId: number) {
+        const exec = await this.getExec(execId);
+        return exec.status;
     }
 
-    getExecResultById(taskId: string) {
-        return `Getting result for task ${taskId}`;
+    async getExecResultById(execId: number) {
+        const exec = await this.getExec(execId);
+        return exec.result;
     }
 }
