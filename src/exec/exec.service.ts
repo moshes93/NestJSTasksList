@@ -4,6 +4,7 @@ import { Repository } from "typeorm";
 import { Exec } from "./exce.entity";
 import { Task } from "src/task/task.entity";
 import { DatabaseActionError } from "src/exceptions/CreateExecException";
+import { EXEC_STATUS } from "./utils/constants";
 
 @Injectable({})
 export class ExecService {
@@ -28,7 +29,7 @@ export class ExecService {
             const exec = await this.getExec(execId);
             if (exec) {
                 exec.result = result;
-                exec.status = "completed";
+                exec.status = EXEC_STATUS.COMPLETED;
                 return this.execRepository.save(exec);
             }
         } catch (e) {

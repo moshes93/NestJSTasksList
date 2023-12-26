@@ -33,7 +33,8 @@ export class ExecController {
             const existingExec = await this.execService.searchForDuplicateExec(name, parameters);
             if (existingExec) {
                 const uuid = uuidv4();
-                if (existingExec.status === 'completed') {
+
+                if (existingExec.status === EXEC_STATUS.COMPLETED) {
                     this.logger.log(`Duplicate task was found, sedning client result, task id: ${existingExec.id}`, 'TaskExecution')
                     res.status(200).json({
                         uuid,
