@@ -10,6 +10,12 @@ import { EXEC_STATUS } from "./utils/constants";
 export class ExecService {
     constructor(@InjectRepository(Exec) private execRepository: Repository<Exec>) {}
 
+    /**
+     * Create entity of execution with task and save it in database
+     * @param name 
+     * @param parameters 
+     * @returns newly created execution
+     */
     async newTaskToExecute(name: string, parameters: object) {
         try {
             const exec = new Exec();
@@ -24,6 +30,12 @@ export class ExecService {
         }
     }
 
+    /**
+     * Update the execution status and result
+     * @param execId 
+     * @param result 
+     * @returns the updated execution
+     */
     async updateCompletedExecution(execId: number, result: string) {
         try {
             const exec = await this.getExec(execId);
@@ -37,6 +49,12 @@ export class ExecService {
         }
     }
 
+    /**
+     * Search for execution with given name and parametees
+     * @param name 
+     * @param parameters 
+     * @returns the execution record if exists and null if there is no result
+     */
     async searchForDuplicateExec(name: string, parameters: object) {
         try {
             const exec = await this.execRepository.createQueryBuilder()
