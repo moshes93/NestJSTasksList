@@ -36,6 +36,18 @@ export class ExecService {
         }
     }
 
+    async searchForDuplicateExec(name: string, parameters: object) {
+        try {
+            const exec = await this.execRepository.createQueryBuilder()
+                .where('taskName = :name', {name})
+                .andWhere('parameters = :parameters', {parameters: JSON.stringify(parameters)})
+                .getOne()
+            return exec;
+        } catch (e) {
+            throw new DatabaseActionError('Error on searching by exec id and parameters', e);
+        }
+    }
+
     async getExec(execId: number) {
         const exec = await this.execRepository.findOne({where: {id: execId}})
         return exec;

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Logger, Param, Post, Res } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Logger, Param, Post, Req, Res } from "@nestjs/common";
 import { ExecService } from "./exec.service";
 import { TaskRequest, delay, handleExecution } from "./utils";
 import { Response } from "express";
@@ -29,6 +29,22 @@ export class ExecController {
     async executeTask(@Body() body: TaskRequest, @Res() res: Response) {
         const { name, parameters } = body;
         try {
+            const existingExec = await this.execService.searchForDuplicateExec(name, parameters);
+            if (existingExec) {
+                if (existingExec.status === 'completed') {
+                    this.logger.log(`Duplicate task was found, sedning client result, task id: ${existingExec.id}`, 'TaskExecution')
+                    res.status(200).json({
+                        message: 'duplicate task completed',
+                        result: existingExec.result
+                    });
+                } else {
+                    this.logger.log(`Duplicate task was found, but no completed, task id: ${existingExec.id}`, 'TaskExecution');
+                    res.status(200).json({
+                        message: 'duplicate task pending',
+                    });
+                }
+                return;
+            }
             const exec = await this.execService.executeTask(name, parameters);
             this.logger.log('Execution task created successfully')
             res.status(200).json({
