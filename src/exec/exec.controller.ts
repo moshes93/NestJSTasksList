@@ -80,7 +80,7 @@ export class ExecController {
             });
 
             // For simulation of long tasks
-            await delay(15000)
+            // await delay(15000)
 
             // Execute the task by name and parameters and get the result
             const result = handleExecution(name, parameters);
