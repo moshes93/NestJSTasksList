@@ -1,9 +1,10 @@
 import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Logger, Param, Post, Req, Res } from "@nestjs/common";
 import { ExecService } from "./exec.service";
-import { TaskRequest, delay, handleExecution } from "./utils";
+import { delay, handleExecution } from "./utils/operations";
 import { Response } from "express";
 import { DatabaseActionError } from "src/exceptions/CreateExecException";
 import { v4 as uuidv4} from "uuid";
+import { EXEC_STATUS, TaskRequest } from "./utils/constants";
 
 @Controller('exec')
 export class ExecController {
@@ -29,8 +30,10 @@ export class ExecController {
     @HttpCode(200)
     async executeTask(@Body() body: TaskRequest, @Res() res: Response) {
         const { name, parameters } = body;
+
         try {
             const existingExec = await this.execService.searchForDuplicateExec(name, parameters);
+
             if (existingExec) {
                 const uuid = uuidv4();
 
@@ -48,12 +51,16 @@ export class ExecController {
                 }
                 return;
             }
+
             const exec = await this.execService.newTaskToExecute(name, parameters);
             this.logger.log('Execution task created successfully')
+
             res.status(200).json({
                 taskId: exec.id
             });
-            await delay(3000)
+
+            await delay(15000)
+
             const result = handleExecution(name, parameters);
             this.execService.updateCompletedExecution(exec.id, result);
             this.logger.log('Execution task finished and updated database successfully')
