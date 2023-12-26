@@ -4,12 +4,19 @@ import { Repository } from "typeorm";
 import { Exec } from "./exce.entity";
 import { Task } from "src/task/task.entity";
 import { DatabaseActionError } from "src/exceptions/CreateExecException";
+import { EXEC_STATUS } from "./utils/constants";
 
 @Injectable({})
 export class ExecService {
     constructor(@InjectRepository(Exec) private execRepository: Repository<Exec>) {}
 
-    async executeTask(name: string, parameters: object) {
+    /**
+     * Create entity of execution with task and save it in database
+     * @param name 
+     * @param parameters 
+     * @returns newly created execution
+     */
+    async newTaskToExecute(name: string, parameters: object) {
         try {
             const exec = new Exec();
             const task = new Task();
@@ -23,12 +30,18 @@ export class ExecService {
         }
     }
 
-    async updateCompletedTask(taskId: number, result: string) {
+    /**
+     * Update the execution status and result
+     * @param execId 
+     * @param result 
+     * @returns the updated execution
+     */
+    async updateCompletedExecution(execId: number, result: string) {
         try {
-            const exec = await this.getExec(taskId);
+            const exec = await this.getExec(execId);
             if (exec) {
                 exec.result = result;
-                exec.status = "completed";
+                exec.status = EXEC_STATUS.COMPLETED;
                 return this.execRepository.save(exec);
             }
         } catch (e) {
@@ -36,6 +49,12 @@ export class ExecService {
         }
     }
 
+    /**
+     * Search for execution with given name and parametees
+     * @param name 
+     * @param parameters 
+     * @returns the execution record if exists and null if there is no result
+     */
     async searchForDuplicateExec(name: string, parameters: object) {
         try {
             const exec = await this.execRepository.createQueryBuilder()

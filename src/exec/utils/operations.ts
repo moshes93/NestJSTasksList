@@ -1,20 +1,13 @@
-import { ApiProperty } from "@nestjs/swagger";
-
-export class TaskRequest {
-    @ApiProperty()
-    name: string;
-    @ApiProperty()
-    parameters: any;
-}
+import { TASK_NAME } from "./constants";
 
 export function handleExecution(taskName: string, parameters: any) {
     let result;
     switch(taskName) {
-        case 'addition':
+        case TASK_NAME.ADDITION:  
             const sumArr = parameters as [];
             result = sumArr.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
             break;
-        case 'multiplication':
+        case TASK_NAME.MULTIPLICATION:
             const multArr = parameters as [];
             result = multArr.reduce((accumulator, currentValue) => accumulator * currentValue, 1);
             break;
