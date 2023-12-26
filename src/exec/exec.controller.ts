@@ -4,14 +4,14 @@ import { delay, handleExecution } from "./utils/operations";
 import { Response } from "express";
 import { DatabaseActionError } from "src/exceptions/CreateExecException";
 import { v4 as uuidv4} from "uuid";
-import { EXEC_STATUS, TaskRequest } from "./utils/constants";
+import { EXEC_STATUS, HTTP_REQUEST_PARAMS, TaskRequest } from "./utils/constants";
 
 @Controller('exec')
 export class ExecController {
     constructor(private execService: ExecService, private logger: Logger) {}
 
     @Get('status/:id')
-    async getExecStatusById(@Param('id') id: number) {
+    async getExecStatusById(@Param(HTTP_REQUEST_PARAMS.ID) id: number) {
         const status = await this.execService.getExecStatusById(id);
         return {
             status
@@ -19,7 +19,7 @@ export class ExecController {
     }
 
     @Get('result/:id')
-    async getExecResultById(@Param('id') id: number) {
+    async getExecResultById(@Param(HTTP_REQUEST_PARAMS.ID) id: number) {
         const result = await this.execService.getExecResultById(id);
         return {
             result

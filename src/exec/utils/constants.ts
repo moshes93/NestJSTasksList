@@ -20,3 +20,7 @@ export const EXEC_STATUS = {
 export const EXEC_VALUES = {
     STATUS_DEFAULT_VALUE: 'pending'
 };
+
+export const HTTP_REQUEST_PARAMS = {
+    ID: 'id'
+}
