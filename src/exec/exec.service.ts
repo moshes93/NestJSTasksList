@@ -23,9 +23,9 @@ export class ExecService {
         }
     }
 
-    async updateCompletedTask(taskId: number, result: string) {
+    async updateCompletedExecution(execId: number, result: string) {
         try {
-            const exec = await this.getExec(taskId);
+            const exec = await this.getExec(execId);
             if (exec) {
                 exec.result = result;
                 exec.status = "completed";

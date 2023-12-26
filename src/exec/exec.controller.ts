@@ -52,7 +52,7 @@ export class ExecController {
             });
             await delay(3000)
             const result = handleExecution(name, parameters);
-            this.execService.updateCompletedTask(exec.id, result);
+            this.execService.updateCompletedExecution(exec.id, result);
             this.logger.log('Execution task finished and updated database successfully')
         } catch (e) {
             if (e instanceof DatabaseActionError) {
