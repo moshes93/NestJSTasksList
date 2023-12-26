@@ -10,7 +10,7 @@ import { EXEC_STATUS } from "./utils/constants";
 export class ExecService {
     constructor(@InjectRepository(Exec) private execRepository: Repository<Exec>) {}
 
-    async executeTask(name: string, parameters: object) {
+    async newTaskToExecute(name: string, parameters: object) {
         try {
             const exec = new Exec();
             const task = new Task();

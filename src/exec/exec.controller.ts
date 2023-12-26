@@ -48,7 +48,7 @@ export class ExecController {
                 }
                 return;
             }
-            const exec = await this.execService.executeTask(name, parameters);
+            const exec = await this.execService.newTaskToExecute(name, parameters);
             this.logger.log('Execution task created successfully')
             res.status(200).json({
                 taskId: exec.id
