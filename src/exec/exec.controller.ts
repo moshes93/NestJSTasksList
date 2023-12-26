@@ -3,6 +3,7 @@ import { ExecService } from "./exec.service";
 import { TaskRequest, delay, handleExecution } from "./utils";
 import { Response } from "express";
 import { DatabaseActionError } from "src/exceptions/CreateExecException";
+import { v4 as uuidv4} from "uuid";
 
 @Controller('exec')
 export class ExecController {
@@ -31,16 +32,17 @@ export class ExecController {
         try {
             const existingExec = await this.execService.searchForDuplicateExec(name, parameters);
             if (existingExec) {
+                const uuid = uuidv4();
                 if (existingExec.status === 'completed') {
                     this.logger.log(`Duplicate task was found, sedning client result, task id: ${existingExec.id}`, 'TaskExecution')
                     res.status(200).json({
-                        message: 'duplicate task completed',
+                        uuid,
                         result: existingExec.result
                     });
                 } else {
                     this.logger.log(`Duplicate task was found, but no completed, task id: ${existingExec.id}`, 'TaskExecution');
                     res.status(200).json({
-                        message: 'duplicate task pending',
+                        uuid
                     });
                 }
                 return;
